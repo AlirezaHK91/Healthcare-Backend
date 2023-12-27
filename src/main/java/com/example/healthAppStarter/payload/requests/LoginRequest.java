@@ -1,6 +1,6 @@
 package com.example.healthAppStarter.payload.requests;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 public class LoginRequest {
     @NotBlank

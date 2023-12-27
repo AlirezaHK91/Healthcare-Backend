@@ -1,10 +1,12 @@
 package com.example.healthAppStarter.payload.requests;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.util.Set;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import org.springframework.validation.annotation.Validated;
 
+import java.util.Set;
+@Validated
 public class SignupRequest {
     @NotBlank
     @Size(min = 3, max = 20)
