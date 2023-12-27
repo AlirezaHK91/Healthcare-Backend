@@ -11,6 +11,7 @@ import com.example.healthAppStarter.repository.RoleRepository;
 import com.example.healthAppStarter.repository.UserRepository;
 import com.example.healthAppStarter.security.jwt.JwtUtils;
 import com.example.healthAppStarter.security.services.UserDetailsImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -21,7 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
