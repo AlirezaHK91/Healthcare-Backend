@@ -10,8 +10,6 @@ name: Java CI with Maven
 
 on:
   push:
-    paths-ignore:
-      - 'test'
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
