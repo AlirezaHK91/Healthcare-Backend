@@ -11,7 +11,6 @@ import com.example.healthAppStarter.repository.RoleRepository;
 import com.example.healthAppStarter.repository.UserRepository;
 import com.example.healthAppStarter.security.jwt.JwtUtils;
 import com.example.healthAppStarter.security.services.UserDetailsImpl;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -20,8 +19,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +43,8 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+    @Autowired
+    PasswordEncoder encoder;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -78,7 +80,7 @@ public class AuthController {
 
         User user = new User(signupRequest.getUsername(),
                 signupRequest.getEmail(),
-                password);
+                encoder.encode(signupRequest.getPassword()));
 
         Set<String> strRoles = signupRequest.getRoles();
         Set<Role> roles = new HashSet<>();
