@@ -26,6 +26,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles = new HashSet<>();
 
+    @Column(name = "full_name")
+    @Size(max = 20)
+    private String fullName;
+
     @Column(name = "username")
     @Size(max = 20)
     private String username;
@@ -37,10 +41,14 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "is_available")
+    private boolean isAvailable;
+
     public User() {
     }
 
-    public User(String username, String email, String password) {
+    public User(String fullName, String username, String email, String password) {
+        this.fullName = fullName;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -75,6 +83,18 @@ public class User {
     }
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+    public String getFullName() {
+        return fullName;
+    }
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+    public void setAvailable(boolean available) {
+        isAvailable = available;
     }
 }
 
