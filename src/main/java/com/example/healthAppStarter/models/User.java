@@ -30,6 +30,10 @@ public class User {
     @Size(max = 20)
     private String fullName;
 
+    @Column(name = "speciality")
+    @Size(max = 20)
+    private String speciality;
+
     @Column(name = "username")
     @Size(max = 20)
     private String username;
@@ -47,8 +51,9 @@ public class User {
     public User() {
     }
 
-    public User(String fullName, String username, String email, String password) {
+    public User(String fullName, String speciality, String username, String email, String password) {
         this.fullName = fullName;
+        this.speciality = speciality;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -95,6 +100,12 @@ public class User {
     }
     public void setAvailable(boolean available) {
         isAvailable = available;
+    }
+    public String getSpeciality() {
+        return speciality;
+    }
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
     }
 }
 

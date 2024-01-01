@@ -11,6 +11,7 @@ public class SignupRequest {
     @NotBlank
     @Size(min = 3, max = 20)
     private String fullName;
+    private String speciality;
     @NotBlank
     @Size(min = 3, max = 20)
     private String username;
@@ -32,6 +33,15 @@ public class SignupRequest {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
+
+    public String getSpeciality() {
+        return speciality;
+    }
+
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
+    }
+
     public String getUsername() {
         return username;
     }
