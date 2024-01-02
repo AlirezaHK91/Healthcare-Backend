@@ -48,6 +48,10 @@ public class User {
     @Column(name = "is_available")
     private boolean isAvailable;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIdentityReference(alwaysAsId = true)
+    private Set<Schedule> schedules = new HashSet<>();
+
     public User() {
     }
 
@@ -106,6 +110,12 @@ public class User {
     }
     public void setSpeciality(String speciality) {
         this.speciality = speciality;
+    }
+    public Set<Schedule> getSchedules() {
+        return schedules;
+    }
+    public void setSchedules(Set<Schedule> schedules) {
+        this.schedules = schedules;
     }
 }
 
