@@ -8,8 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.validation.annotation.Validated;
 
-import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "schedule")
@@ -25,8 +25,9 @@ public class Schedule {
     private User user;
     @Column(name = "date")
     private LocalDate date;
+    @Basic
     @Column(name = "time")
-    private Time time;
+    private LocalDateTime time;
     @Column(name = "is_available")
     private boolean isAvailable;
     @Column(name = "created_at")
@@ -57,10 +58,10 @@ public class Schedule {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-    public Time getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
-    public void setTime(Time time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
     public boolean isAvailable() {
