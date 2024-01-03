@@ -23,6 +23,9 @@ public class Schedule {
     @JoinColumn(name = "staff_id", referencedColumnName = "id")
     @JsonIdentityReference(alwaysAsId = true)
     private User user;
+    @OneToOne(mappedBy = "schedule")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Booking booking;
     @Column(name = "date")
     private LocalDate date;
     @Basic
@@ -51,6 +54,12 @@ public class Schedule {
     }
     public void setUser(User user) {
         this.user = user;
+    }
+    public Booking getBooking() {
+        return booking;
+    }
+    public void setBooking(Booking booking) {
+        this.booking = booking;
     }
     public LocalDate getDate() {
         return date;
