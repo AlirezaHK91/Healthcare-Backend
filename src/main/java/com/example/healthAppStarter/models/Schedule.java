@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.validation.annotation.Validated;
 
+import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "schedule")
@@ -30,8 +31,9 @@ public class Schedule {
     private LocalDate date;
     @Basic
     @Column(name = "time")
-    private LocalDateTime time;
+    private Time time;
     @Column(name = "is_available")
+    @ColumnDefault("true")
     private boolean isAvailable;
     @Column(name = "created_at")
     @CreationTimestamp
@@ -67,10 +69,10 @@ public class Schedule {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-    public LocalDateTime getTime() {
+    public Time getTime() {
         return time;
     }
-    public void setTime(LocalDateTime time) {
+    public void setTime(Time time) {
         this.time = time;
     }
     public boolean isAvailable() {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
@@ -31,6 +32,7 @@ public class Booking {
     @Column(name = "description")
     private String description;
     @Column(name = "is_done")
+    @ColumnDefault("false")
     private boolean isDone;
     @Column(name = "created_at")
     @CreationTimestamp
