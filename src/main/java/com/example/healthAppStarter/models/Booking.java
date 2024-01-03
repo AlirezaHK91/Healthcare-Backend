@@ -7,8 +7,6 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "booking")
@@ -23,10 +21,10 @@ public class Booking {
     @JsonIdentityReference(alwaysAsId = true)
     private User user;
 
-/*    @JoinColumn(name = "schedule_id", referencedColumnName = "id")
+    @JoinColumn(name = "schedule_id", referencedColumnName = "id")
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIdentityReference(alwaysAsId = true)
-    private Schedule scheduleId;*/
+    private Schedule schedule;
 
     @Column(name = "specialist")
     private String specialist;
@@ -43,59 +41,51 @@ public class Booking {
 
     public Booking() {
     }
-
     public long getId() {
         return id;
     }
-
     public void setId(long id) {
         this.id = id;
     }
-
     public User getUser() {
         return user;
     }
-
     public void setUser(User user) {
         this.user = user;
     }
-
+    public Schedule getSchedule() {
+        return schedule;
+    }
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
     public String getSpecialist() {
         return specialist;
     }
-
     public void setSpecialist(String specialist) {
         this.specialist = specialist;
     }
-
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
-
     public boolean isDone() {
         return isDone;
     }
-
     public void setDone(boolean done) {
         isDone = done;
     }
-
     public LocalDate getCreatedAt() {
         return createdAt;
     }
-
     public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
-
     public LocalDate getUpdatedAt() {
         return updatedAt;
     }
-
     public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
     }
