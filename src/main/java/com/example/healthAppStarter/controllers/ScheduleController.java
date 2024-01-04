@@ -3,8 +3,12 @@ package com.example.healthAppStarter.controllers;
 import com.example.healthAppStarter.Services.ScheduleService;
 import com.example.healthAppStarter.models.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
 
 @RestController
 @RequestMapping(value = "/api/auth")
@@ -15,8 +19,13 @@ public class ScheduleController {
 
     @PostMapping("/schedule")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public Schedule createSchedule(@RequestBody Schedule schedule){
-        return scheduleService.createSchedule(schedule);
+    public ResponseEntity<?> createSchedule(@RequestBody Schedule schedule){
+        try {
+            Schedule createdSchedule = scheduleService.createSchedule(schedule);
+            return new ResponseEntity<>(createdSchedule, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/schedule/{id}")
