@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ class ScheduleServiceTest {
     private ScheduleRepository scheduleRepository;
 
     @Test
+    @Rollback(false)
     void createSchedule() {
         Schedule schedule = new Schedule();
         schedule.setDate(Date.valueOf("2024-1-2").toLocalDate());
@@ -41,6 +43,7 @@ class ScheduleServiceTest {
     }
 
     @Test
+    @Rollback(false)
     void createScheduleValidateSchedule() {
         Schedule schedule1 = new Schedule();
         schedule1.setDate(Date.valueOf("2024-1-2").toLocalDate());
@@ -57,6 +60,7 @@ class ScheduleServiceTest {
     }
 
     @Test
+    @Rollback(false)
     void updateSchedule() {
         Schedule schedule = new Schedule();
         schedule.setDate(Date.valueOf("2024-1-2").toLocalDate());
@@ -72,6 +76,7 @@ class ScheduleServiceTest {
     }
 
     @Test
+    @Rollback(false)
     void deleteSchedule() {
         Schedule schedule = new Schedule();
         schedule.setDate(Date.valueOf("2024-1-2").toLocalDate());
