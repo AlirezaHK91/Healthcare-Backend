@@ -5,13 +5,24 @@ import com.example.healthAppStarter.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ScheduleService {
     @Autowired
     ScheduleRepository scheduleRepository;
 
-    public Schedule createSchedule (Schedule schedule){
-        return scheduleRepository.save(schedule);
+    public Schedule createSchedule(Schedule schedule) {
+        if (isTimeSlotAvailable(schedule)) {
+            return scheduleRepository.save(schedule);
+        } else {
+            throw new IllegalArgumentException("The specified date and time are already booked.");
+        }
+    }
+
+    private boolean isTimeSlotAvailable(Schedule newSchedule) {
+        List<Schedule> existingSchedules = scheduleRepository.findByDateAndTime(newSchedule.getDate(), newSchedule.getTime());
+        return existingSchedules.isEmpty();
     }
 
     public Schedule getScheduleById(Long id){
