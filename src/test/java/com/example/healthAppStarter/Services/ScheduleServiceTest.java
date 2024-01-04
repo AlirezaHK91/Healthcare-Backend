@@ -29,10 +29,7 @@ class ScheduleServiceTest {
 
     @Test
     void createSchedule() {
-        Schedule schedule = new Schedule();
-        schedule.setDate(Date.valueOf("2024-1-2").toLocalDate());
-        schedule.setTime(Time.valueOf("10:00:00"));
-        schedule.setAvailable(true);
+        Schedule schedule = createdSchedule();
 
         when(scheduleRepository.save(any())).thenReturn(schedule);
 
@@ -49,45 +46,25 @@ class ScheduleServiceTest {
 
     @Test
     void createScheduleValidateSchedule() {
-        // Arrange
-        Schedule schedule1 = createSampleSchedule();
 
-        // Mock the repository behavior
+        Schedule schedule1 = createdSchedule();
+
         when(scheduleRepository.save(any(Schedule.class)))
-                .thenReturn(schedule1) // Stub the first call
+                .thenReturn(schedule1)
                 .thenThrow(new IllegalArgumentException("The specified date and time are already booked."));
 
-        // Act and Assert the first time
         scheduleService.createSchedule(schedule1);
 
-        // Verify that the save method is called exactly once with any Schedule argument
         verify(scheduleRepository, times(1)).save(any(Schedule.class));
 
-        // Act and Assert the second time to verify the exception
         assertThrows(IllegalArgumentException.class, () -> scheduleService.createSchedule(schedule1));
 
-        // Verify that the save method is called again after the second invocation
         verify(scheduleRepository, times(2)).save(any(Schedule.class));
     }
 
-
-
-
-    private Schedule createSampleSchedule() {
-        Schedule schedule = new Schedule();
-        schedule.setDate(Date.valueOf("2024-01-02").toLocalDate());
-        schedule.setTime(Time.valueOf("12:00:00"));
-        schedule.setAvailable(true);
-        return schedule;
-    }
-
-
     @Test
     void updateSchedule() {
-        Schedule schedule = new Schedule();
-        schedule.setDate(Date.valueOf("2024-1-2").toLocalDate());
-        schedule.setTime(Time.valueOf("14:00:00"));
-        schedule.setAvailable(true);
+        Schedule schedule = createdSchedule();
 
         when(scheduleRepository.save(any())).thenReturn(schedule);
 
@@ -104,14 +81,19 @@ class ScheduleServiceTest {
 
     @Test
     void deleteSchedule() {
-        Schedule schedule = new Schedule();
+        Schedule schedule = createdSchedule();
         schedule.setId(1L);
-        schedule.setDate(Date.valueOf("2024-1-2").toLocalDate());
-        schedule.setTime(Time.valueOf("14:00:00"));
-        schedule.setAvailable(true);
 
         scheduleService.deleteSchedule(schedule.getId());
 
         verify(scheduleRepository, times(1)).deleteById(1L);
+    }
+
+    private Schedule createdSchedule() {
+        Schedule schedule = new Schedule();
+        schedule.setDate(Date.valueOf("2024-01-02").toLocalDate());
+        schedule.setTime(Time.valueOf("12:00:00"));
+        schedule.setAvailable(true);
+        return schedule;
     }
 }
