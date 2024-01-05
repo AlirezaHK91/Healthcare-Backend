@@ -52,6 +52,10 @@ public class User {
     @JsonIdentityReference(alwaysAsId = true)
     private Set<Schedule> schedules = new HashSet<>();
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIdentityReference(alwaysAsId = true)
+    private Review review;
+
     public User() {
     }
 
