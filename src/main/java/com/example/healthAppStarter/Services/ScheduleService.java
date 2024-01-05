@@ -33,6 +33,17 @@ public class ScheduleService {
         return scheduleRepository.save(schedule);
     }
 
+    public Schedule updateAvailability(Long id, boolean isAvailable) {
+        Schedule existingSchedule = scheduleRepository.findById(id).orElse(null);
+
+        if (existingSchedule != null) {
+            existingSchedule.setAvailable(isAvailable);
+            return scheduleRepository.save(existingSchedule);
+        } else {
+            throw new IllegalArgumentException("Schedule not found with id: " + id);
+        }
+    }
+
     public void deleteSchedule(Long id){
         scheduleRepository.deleteById(id);
     }
