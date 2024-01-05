@@ -52,6 +52,10 @@ public class User {
     @JsonIdentityReference(alwaysAsId = true)
     private Set<Schedule> schedules = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Set<Review> review = new HashSet<>();
+
     public User() {
     }
 
@@ -116,6 +120,12 @@ public class User {
     }
     public void setSchedules(Set<Schedule> schedules) {
         this.schedules = schedules;
+    }
+    public Set<Review> getReview() {
+        return review;
+    }
+    public void setReview(Set<Review> review) {
+        this.review = review;
     }
 }
 

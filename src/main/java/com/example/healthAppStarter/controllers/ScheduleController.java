@@ -27,7 +27,6 @@ public class ScheduleController {
             return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
-
     @GetMapping("/schedule/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public Schedule getScheduleById(@PathVariable Long id){
