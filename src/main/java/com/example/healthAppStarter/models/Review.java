@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 @Entity
@@ -14,7 +15,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     @JsonIdentityReference(alwaysAsId = true)
     private User user;
@@ -25,6 +26,9 @@ public class Review {
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDate createdAt;
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDate updatedAt;
 
     public Review() {
     }
@@ -58,5 +62,11 @@ public class Review {
     }
     public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
+    }
+    public LocalDate getUpdatedAt() {
+        return updatedAt;
+    }
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
