@@ -33,10 +33,21 @@ public class ScheduleController {
         return scheduleService.getScheduleById(id);
     }
 
-    @PutMapping("/schedule/update/{id}")
+    @PutMapping("/schedule/update")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Schedule updateSchedule( @RequestBody Schedule schedule){
         return scheduleService.updateSchedule(schedule);
+    }
+
+    @PutMapping("/schedule/update/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    public ResponseEntity<?> updateSchedule(@PathVariable Long id, @RequestBody Schedule updatedSchedule) {
+        try {
+            Schedule updatedScheduleResult = scheduleService.updateAvailability(id, updatedSchedule.isAvailable());
+            return new ResponseEntity<>(updatedScheduleResult, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/schedule/delete/{id}")
