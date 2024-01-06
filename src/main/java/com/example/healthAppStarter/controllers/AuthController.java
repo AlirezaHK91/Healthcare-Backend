@@ -11,6 +11,7 @@ import com.example.healthAppStarter.repository.RoleRepository;
 import com.example.healthAppStarter.repository.UserRepository;
 import com.example.healthAppStarter.security.jwt.JwtUtils;
 import com.example.healthAppStarter.security.services.UserDetailsImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -21,9 +22,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
+
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -112,4 +114,47 @@ public class AuthController {
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully"));
     }
+
+    @PutMapping("/update-user/{id}")
+    public ResponseEntity<?> updateUserInfo(
+            @PathVariable Long id,
+            @RequestBody User updatedUser) {
+
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User existingUser = userOptional.get();
+            existingUser.updateUserInfo(updatedUser);
+
+            if (updatedUser.getPassword() != null) {
+                existingUser.setPassword(encoder.encode(updatedUser.getPassword()));
+            }
+
+            userRepository.save(existingUser);
+            return ResponseEntity.ok(new MessageResponse("User information updated successfully"));
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User not found"));
+        }
+    }
+
+    @PutMapping("/update-status/{id}")
+    public ResponseEntity<?> updateAvailability(@PathVariable Long id, @RequestParam boolean isAvailable) {
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setAvailable(isAvailable);
+            userRepository.save(user);
+            return ResponseEntity.ok(new MessageResponse("User availability updated successfully"));
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User not found"));
+        }
+    }
 }
+
+
+

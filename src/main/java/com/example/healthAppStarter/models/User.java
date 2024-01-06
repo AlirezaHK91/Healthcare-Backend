@@ -66,6 +66,15 @@ public class User {
         this.email = email;
         this.password = password;
     }
+    public void updateUserInfo(User updatedUser) {
+        this.setFullName(updatedUser.getFullName());
+        this.setSpeciality(updatedUser.getSpeciality());
+        this.setUsername(updatedUser.getUsername());
+        this.setEmail(updatedUser.getEmail());
+        this.setPassword(updatedUser.getPassword());
+        this.setAvailable(updatedUser.isAvailable());
+    }
+
 
     public Long getId() {
         return id;
