@@ -29,10 +29,9 @@ public class User {
     @Column(name = "full_name")
     @Size(max = 20)
     private String fullName;
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "speciality")
-    @Size(max = 20)
-    private String speciality;
+    private Speciality speciality;
 
     @Column(name = "username")
     @Size(max = 20)
@@ -59,7 +58,7 @@ public class User {
     public User() {
     }
 
-    public User(String fullName, String speciality, String username, String email, String password) {
+    public User(String fullName, Speciality speciality, String username, String email, String password) {
         this.fullName = fullName;
         this.speciality = speciality;
         this.username = username;
@@ -118,10 +117,10 @@ public class User {
     public void setAvailable(boolean available) {
         isAvailable = available;
     }
-    public String getSpeciality() {
+    public Speciality getSpeciality() {
         return speciality;
     }
-    public void setSpeciality(String speciality) {
+    public void setSpeciality(Speciality speciality) {
         this.speciality = speciality;
     }
     public Set<Schedule> getSchedules() {
