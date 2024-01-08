@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Time;
@@ -36,9 +35,9 @@ public class BookingController {
         return bookingService.getBookingById(id);
     }
 
-    @PutMapping("/booking/update/{id}")
+    @PutMapping("/booking/update")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    public Booking updateBooking(@PathVariable Long id, @RequestBody Booking booking){
+    public Booking updateBooking(@RequestBody Booking booking){
         return bookingService.updateBooking(booking);
     }
 

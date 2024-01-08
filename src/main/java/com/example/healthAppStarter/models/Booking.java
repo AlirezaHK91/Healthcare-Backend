@@ -2,6 +2,7 @@ package com.example.healthAppStarter.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -11,11 +12,11 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "booking")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = User.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Booking.class)
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
@@ -26,9 +27,9 @@ public class Booking {
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIdentityReference(alwaysAsId = true)
     private Schedule schedule;
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "specialist")
-    private String specialist;
+    private Speciality speciality;
     @Column(name = "description")
     private String description;
     @Column(name = "is_done")
@@ -61,11 +62,11 @@ public class Booking {
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
     }
-    public String getSpecialist() {
-        return specialist;
+    public Speciality getSpeciality() {
+        return speciality;
     }
-    public void setSpecialist(String specialist) {
-        this.specialist = specialist;
+    public void setSpeciality(Speciality speciality) {
+        this.speciality = speciality;
     }
     public String getDescription() {
         return description;
@@ -73,6 +74,7 @@ public class Booking {
     public void setDescription(String description) {
         this.description = description;
     }
+    @JsonProperty("isDone")
     public boolean isDone() {
         return isDone;
     }
