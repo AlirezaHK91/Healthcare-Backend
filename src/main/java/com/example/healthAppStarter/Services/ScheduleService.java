@@ -25,6 +25,10 @@ public class ScheduleService {
         return existingSchedules.isEmpty();
     }
 
+    public boolean checkIfAvailable (Schedule schedule) {
+        return schedule.isAvailable();
+    }
+
     public Schedule getScheduleById(Long id){
         return scheduleRepository.findById(id).get();
     }
