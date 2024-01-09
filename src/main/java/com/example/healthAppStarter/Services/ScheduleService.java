@@ -33,6 +33,10 @@ public class ScheduleService {
         return scheduleRepository.findById(id).get();
     }
 
+    public List<Schedule> getAllSchedules() {
+        return scheduleRepository.findAll();
+    }
+
     public Schedule updateSchedule(Schedule schedule){
         return scheduleRepository.save(schedule);
     }

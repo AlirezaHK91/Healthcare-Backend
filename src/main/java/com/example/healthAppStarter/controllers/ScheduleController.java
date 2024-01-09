@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/auth")
@@ -31,6 +32,12 @@ public class ScheduleController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public Schedule getScheduleById(@PathVariable Long id){
         return scheduleService.getScheduleById(id);
+    }
+
+    @GetMapping("/schedule/get-all")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    public List<Schedule> getAllSchedules() {
+        return scheduleService.getAllSchedules();
     }
 
     @PutMapping("/schedule/update")
