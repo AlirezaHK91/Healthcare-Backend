@@ -11,6 +11,8 @@ import com.example.healthAppStarter.repository.RoleRepository;
 import com.example.healthAppStarter.repository.UserRepository;
 import com.example.healthAppStarter.security.jwt.JwtUtils;
 import com.example.healthAppStarter.security.services.UserDetailsImpl;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +23,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -153,6 +156,14 @@ public class AuthController {
                     .badRequest()
                     .body(new MessageResponse("Error: User not found"));
         }
+    }
+
+    @PostMapping("/sign-out")
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        SecurityContextHolder.clearContext();
+        CookieClearingLogoutHandler cookieClearingLogoutHandler = new CookieClearingLogoutHandler("cookie");
+        cookieClearingLogoutHandler.logout(request, response, null);
+        return ResponseEntity.ok("Sign out successful");
     }
 }
 
