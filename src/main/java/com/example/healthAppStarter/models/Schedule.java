@@ -43,7 +43,21 @@ public class Schedule {
     @UpdateTimestamp
     private LocalDate updatedAt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "specialist")
+    private Speciality speciality;
+
+
+
     public Schedule() {
+    }
+
+    public Speciality getSpeciality() {
+        return speciality;
+    }
+
+    public void setSpeciality(Speciality speciality) {
+        this.speciality = speciality;
     }
 
     public Long getId() {
