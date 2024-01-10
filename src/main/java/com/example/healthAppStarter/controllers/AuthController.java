@@ -1,5 +1,6 @@
 package com.example.healthAppStarter.controllers;
 
+import com.example.healthAppStarter.Services.UserService;
 import com.example.healthAppStarter.models.ERole;
 import com.example.healthAppStarter.models.Role;
 import com.example.healthAppStarter.models.User;
@@ -36,6 +37,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -129,10 +133,6 @@ public class AuthController {
             User existingUser = userOptional.get();
             existingUser.updateUserInfo(updatedUser);
 
-            if (updatedUser.getPassword() != null) {
-                existingUser.setPassword(encoder.encode(updatedUser.getPassword()));
-            }
-
             userRepository.save(existingUser);
             return ResponseEntity.ok(new MessageResponse("User information updated successfully"));
         } else {
@@ -165,6 +165,29 @@ public class AuthController {
         cookieClearingLogoutHandler.logout(request, response, null);
         return ResponseEntity.ok("Sign out successful");
     }
+
+    @GetMapping("user/{id}")
+    public User findUserById (@PathVariable Long id){
+        return userService.findUserById(id);
+    }
+
+    @PutMapping("/update-password/{id}")
+    public ResponseEntity<?> updatePassword(@PathVariable Long id, @RequestParam String newPassword) {
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setPassword(encoder.encode(newPassword));
+            userRepository.save(user);
+            return ResponseEntity.ok(new MessageResponse("Password updated successfully"));
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User not found"));
+        }
+    }
+
+
 }
 
 
