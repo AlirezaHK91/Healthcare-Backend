@@ -24,8 +24,8 @@ public class Booking {
     private User user;
 
     @JoinColumn(name = "schedule_id", referencedColumnName = "id")
-    @OneToOne(fetch = FetchType.LAZY)
-    @JsonIdentityReference(alwaysAsId = true)
+    @OneToOne(fetch = FetchType.EAGER)
+    @JsonIdentityReference(alwaysAsId = false)
     private Schedule schedule;
     @Enumerated(EnumType.STRING)
     @Column(name = "specialist")
