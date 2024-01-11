@@ -13,6 +13,7 @@ public class ReviewService {
     ReviewRepository reviewRepository;
 
     public Review createReview (Review review) {
+        review.setDone(true);
         return reviewRepository.save(review);
     }
     public void deleteReview(Long id) {
