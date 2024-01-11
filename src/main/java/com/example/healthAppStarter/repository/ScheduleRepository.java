@@ -9,4 +9,7 @@ import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Schedule> findByDateAndTime(LocalDate date, Time time);
+
+    List<Schedule> findByDate(LocalDate date);
+
 }

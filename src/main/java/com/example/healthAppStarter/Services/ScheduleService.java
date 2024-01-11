@@ -5,6 +5,7 @@ import com.example.healthAppStarter.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.util.List;
 
 @Service
@@ -16,13 +17,29 @@ public class ScheduleService {
         if (isTimeSlotAvailable(schedule)) {
             return scheduleRepository.save(schedule);
         } else {
-            throw new IllegalArgumentException("The specified date and time are already booked.");
+            throw new IllegalArgumentException("There must be at least 1 hour between every schedules.");
         }
     }
 
     private boolean isTimeSlotAvailable(Schedule newSchedule) {
-        List<Schedule> existingSchedules = scheduleRepository.findByDateAndTime(newSchedule.getDate(), newSchedule.getTime());
-        return existingSchedules.isEmpty();
+
+        List<Schedule> existingSchedules = scheduleRepository.findByDate(newSchedule.getDate());
+
+        for (Schedule existingSchedule : existingSchedules) {
+            if (!isHourGapValid(newSchedule.getTime(), existingSchedule.getTime())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isHourGapValid(Time newTime, Time existingTime) {
+        long hourInMillis = 60 * 60 * 1000;
+        long newTimeInMillis = newTime.getTime();
+        long existingTimeInMillis = existingTime.getTime();
+
+        return Math.abs(newTimeInMillis - existingTimeInMillis) >= hourInMillis;
     }
 
     public boolean checkIfAvailable (Schedule schedule) {
