@@ -2,8 +2,10 @@ package com.example.healthAppStarter.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -19,6 +21,10 @@ public class Review {
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     @JsonIdentityReference(alwaysAsId = true)
     private User user;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "booking_id", referencedColumnName = "id")
+    @JsonIdentityReference(alwaysAsId = false)
+    private Booking booking;
     @Column(name = "rating")
     private int rating;
     @Column(name = "comment")
@@ -29,6 +35,9 @@ public class Review {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDate updatedAt;
+    @ColumnDefault("false")
+    @Column(name = "is_done")
+    private boolean isDone;
 
     public Review() {
     }
@@ -68,5 +77,18 @@ public class Review {
     }
     public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    public Booking getBooking() {
+        return booking;
+    }
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
+    @JsonProperty("isDone")
+    public boolean isDone() {
+        return isDone;
+    }
+    public void setDone(boolean done) {
+        isDone = done;
     }
 }

@@ -22,7 +22,9 @@ public class Booking {
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     @JsonIdentityReference(alwaysAsId = true)
     private User user;
-
+    @OneToOne(mappedBy = "booking", fetch = FetchType.EAGER)
+    @JsonIdentityReference(alwaysAsId = false)
+    private Review review;
     @JoinColumn(name = "schedule_id", referencedColumnName = "id")
     @OneToOne(fetch = FetchType.EAGER)
     @JsonIdentityReference(alwaysAsId = false)
@@ -92,5 +94,11 @@ public class Booking {
     }
     public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    public Review getReview() {
+        return review;
+    }
+    public void setReview(Review review) {
+        this.review = review;
     }
 }
