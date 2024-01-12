@@ -55,6 +55,10 @@ public class User {
     @JsonIdentityReference(alwaysAsId = true)
     private Set<Review> review = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIdentityReference(alwaysAsId = true)
+    private Set<Booking> booking = new HashSet<>();
+
     public User() {
     }
 
@@ -134,6 +138,12 @@ public class User {
     }
     public void setReview(Set<Review> review) {
         this.review = review;
+    }
+    public Set<Booking> getBooking() {
+        return booking;
+    }
+    public void setBooking(Set<Booking> booking) {
+        this.booking = booking;
     }
 }
 

@@ -15,7 +15,8 @@ public class ScheduleService {
 
     public Schedule createSchedule(Schedule schedule) {
         if (isTimeSlotAvailable(schedule)) {
-            return scheduleRepository.save(schedule);
+
+            return  scheduleRepository.save(schedule);
         } else {
             throw new IllegalArgumentException("There must be at least 1 hour between every schedules.");
         }
