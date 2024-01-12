@@ -1,10 +1,8 @@
 package com.example.healthAppStarter.Services;
 
 import com.example.healthAppStarter.models.Schedule;
-import com.example.healthAppStarter.notification.Notification;
 import com.example.healthAppStarter.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
@@ -15,20 +13,10 @@ public class ScheduleService {
     @Autowired
     ScheduleRepository scheduleRepository;
 
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
-
     public Schedule createSchedule(Schedule schedule) {
         if (isTimeSlotAvailable(schedule)) {
-            Schedule createdSchedule = scheduleRepository.save(schedule);
 
-            // Mock WebSocket notification
-            mockWebSocketNotification("New schedule created!");
-
-            messagingTemplate.convertAndSend("/topic/schedule-notifications",
-                    new Notification("New schedule created!"));
-
-            return createdSchedule;
+            return  scheduleRepository.save(schedule);
         } else {
             throw new IllegalArgumentException("There must be at least 1 hour between every schedules.");
         }
@@ -57,10 +45,6 @@ public class ScheduleService {
 
     public boolean checkIfAvailable (Schedule schedule) {
         return schedule.isAvailable();
-    }
-    //Mock notification method
-    private void mockWebSocketNotification(String message) {
-        System.out.println("WebSocket Notification: " + message);
     }
 
     public Schedule getScheduleById(Long id){
