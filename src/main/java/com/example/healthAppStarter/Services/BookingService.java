@@ -4,15 +4,15 @@ import com.example.healthAppStarter.models.Booking;
 import com.example.healthAppStarter.models.Schedule;
 import com.example.healthAppStarter.repository.BookingRepository;
 import com.example.healthAppStarter.repository.ScheduleRepository;
-import org.hibernate.validator.constraints.Range;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class BookingService {
@@ -25,7 +25,12 @@ public class BookingService {
 
     @Autowired
     ScheduleService scheduleService;
+    @Autowired
+    JavaMailSender javaMailSender;
+    @Autowired
+    EmailService emailService;
 
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(BookingService.class);
 
     public Booking createBooking(Booking booking) {
         Optional<Schedule> bookedSchedule = scheduleRepository.findById(booking.getSchedule().getId());
@@ -33,9 +38,12 @@ public class BookingService {
         if (bookedSchedule.isPresent()) {
             Schedule schedule = bookedSchedule.get();
 
-            if (scheduleService.checkIfAvailable(bookedSchedule.get()) ) {
+            if (scheduleService.checkIfAvailable(bookedSchedule.get())) {
                 Booking savedBooking = bookingRepository.save(booking);
                 scheduleService.updateAvailability(schedule.getId(), false);
+
+                emailService.sendBookingConfirmationEmail(savedBooking);
+
                 return savedBooking;
             }
         } else {
