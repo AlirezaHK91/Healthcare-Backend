@@ -1,5 +1,6 @@
 package com.example.healthAppStarter.controllers;
 
+import com.example.healthAppStarter.Services.UserService;
 import com.example.healthAppStarter.models.ERole;
 import com.example.healthAppStarter.models.Role;
 import com.example.healthAppStarter.models.User;
@@ -11,6 +12,9 @@ import com.example.healthAppStarter.repository.RoleRepository;
 import com.example.healthAppStarter.repository.UserRepository;
 import com.example.healthAppStarter.security.jwt.JwtUtils;
 import com.example.healthAppStarter.security.services.UserDetailsImpl;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -20,10 +24,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
+
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,6 +37,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -112,4 +121,74 @@ public class AuthController {
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully"));
     }
+
+    @PutMapping("/update-user/{id}")
+    public ResponseEntity<?> updateUserInfo(
+            @PathVariable Long id,
+            @RequestBody User updatedUser) {
+
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User existingUser = userOptional.get();
+            existingUser.updateUserInfo(updatedUser);
+
+            userRepository.save(existingUser);
+            return ResponseEntity.ok(new MessageResponse("User information updated successfully"));
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User not found"));
+        }
+    }
+
+    @PutMapping("/update-status/{id}")
+    public ResponseEntity<?> updateAvailability(@PathVariable Long id, @RequestParam boolean isAvailable) {
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setAvailable(isAvailable);
+            userRepository.save(user);
+            return ResponseEntity.ok(new MessageResponse("User availability updated successfully"));
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User not found"));
+        }
+    }
+
+    @PostMapping("/sign-out")
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        SecurityContextHolder.clearContext();
+        CookieClearingLogoutHandler cookieClearingLogoutHandler = new CookieClearingLogoutHandler("cookie");
+        cookieClearingLogoutHandler.logout(request, response, null);
+        return ResponseEntity.ok("Sign out successful");
+    }
+
+    @GetMapping("user/{id}")
+    public User findUserById (@PathVariable Long id){
+        return userService.findUserById(id);
+    }
+
+    @PutMapping("/update-password/{id}")
+    public ResponseEntity<?> updatePassword(@PathVariable Long id, @RequestParam String newPassword) {
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setPassword(encoder.encode(newPassword));
+            userRepository.save(user);
+            return ResponseEntity.ok(new MessageResponse("Password updated successfully"));
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: User not found"));
+        }
+    }
+
+
 }
+
+
+

@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/auth")
@@ -27,17 +28,33 @@ public class ScheduleController {
             return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
-
     @GetMapping("/schedule/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public Schedule getScheduleById(@PathVariable Long id){
         return scheduleService.getScheduleById(id);
     }
 
-    @PutMapping("/schedule/update/{id}")
+    @GetMapping("/schedule/get-all")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    public List<Schedule> getAllSchedules() {
+        return scheduleService.getAllSchedules();
+    }
+
+    @PutMapping("/schedule/update")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Schedule updateSchedule( @RequestBody Schedule schedule){
         return scheduleService.updateSchedule(schedule);
+    }
+
+    @PutMapping("/schedule/update/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    public ResponseEntity<?> updateSchedule(@PathVariable Long id, @RequestBody Schedule updatedSchedule) {
+        try {
+            Schedule updatedScheduleResult = scheduleService.updateAvailability(id, updatedSchedule.isAvailable());
+            return new ResponseEntity<>(updatedScheduleResult, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(Collections.singletonMap("error", e.getMessage()), HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/schedule/delete/{id}")

@@ -1,5 +1,6 @@
 package com.example.healthAppStarter.payload.requests;
 
+import com.example.healthAppStarter.models.Speciality;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -11,7 +12,7 @@ public class SignupRequest {
     @NotBlank
     @Size(min = 3, max = 20)
     private String fullName;
-    private String speciality;
+    private Speciality speciality;
     @NotBlank
     @Size(min = 3, max = 20)
     private String username;
@@ -34,11 +35,11 @@ public class SignupRequest {
         this.fullName = fullName;
     }
 
-    public String getSpeciality() {
+    public Speciality getSpeciality() {
         return speciality;
     }
 
-    public void setSpeciality(String speciality) {
+    public void setSpeciality(Speciality speciality) {
         this.speciality = speciality;
     }
 

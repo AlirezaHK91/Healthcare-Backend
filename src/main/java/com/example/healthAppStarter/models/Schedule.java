@@ -2,6 +2,7 @@ package com.example.healthAppStarter.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -42,7 +43,21 @@ public class Schedule {
     @UpdateTimestamp
     private LocalDate updatedAt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "specialist")
+    private Speciality speciality;
+
+
+
     public Schedule() {
+    }
+
+    public Speciality getSpeciality() {
+        return speciality;
+    }
+
+    public void setSpeciality(Speciality speciality) {
+        this.speciality = speciality;
     }
 
     public Long getId() {
@@ -75,6 +90,7 @@ public class Schedule {
     public void setTime(Time time) {
         this.time = time;
     }
+    @JsonProperty("isAvailable")
     public boolean isAvailable() {
         return isAvailable;
     }
