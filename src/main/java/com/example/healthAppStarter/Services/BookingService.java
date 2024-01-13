@@ -73,7 +73,24 @@ public class BookingService {
     }
 
     public void deleteBooking(Long id) {
-        bookingRepository.deleteById(id);
+        Optional<Booking> bookingOptional = bookingRepository.findById(id);
+
+        if (bookingOptional.isPresent()) {
+            Booking booking = bookingOptional.get();
+            Long scheduleId = booking.getSchedule().getId();
+
+            bookingRepository.deleteById(id);
+
+            Optional<Schedule> scheduleOptional = scheduleRepository.findById(scheduleId);
+            if (scheduleOptional.isPresent()) {
+                Schedule schedule = scheduleOptional.get();
+                scheduleService.updateAvailability(schedule.getId(), true);
+            } else {
+                throw new IllegalArgumentException("Schedule not found with id: " + scheduleId);
+            }
+        } else {
+            throw new IllegalArgumentException("Booking not found with id: " + id);
+        }
     }
 
     public List<Booking> getAllBooking(Long id) {
