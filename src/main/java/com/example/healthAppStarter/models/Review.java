@@ -21,7 +21,7 @@ public class Review {
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     @JsonIdentityReference(alwaysAsId = true)
     private User user;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "booking_id", referencedColumnName = "id")
     @JsonIdentityReference(alwaysAsId = false)
     private Booking booking;

@@ -22,7 +22,7 @@ public class Booking {
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     @JsonIdentityReference(alwaysAsId = false)
     private User user;
-    @OneToOne(mappedBy = "booking", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
     @JsonIdentityReference(alwaysAsId = false)
     private Review review;
     @JoinColumn(name = "schedule_id", referencedColumnName = "id")
