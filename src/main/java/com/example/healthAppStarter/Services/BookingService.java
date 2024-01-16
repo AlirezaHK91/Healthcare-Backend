@@ -96,4 +96,7 @@ public class BookingService {
     public List<Booking> getAllBooking(Long id) {
         return bookingRepository.findByUserId(id);
     }
+    public List<Booking> getAllBookings() {
+        return bookingRepository.findAll();
+    }
 }

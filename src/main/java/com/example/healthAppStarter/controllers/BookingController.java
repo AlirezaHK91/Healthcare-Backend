@@ -40,6 +40,12 @@ public class BookingController {
         return bookingService.getAllBooking(patientId);
     }
 
+    @GetMapping("/booking/getAll")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    public List<Booking> getAllBookings(){
+        return bookingService.getAllBookings();
+    }
+
     @PutMapping("/booking/setIsDone/{id}")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public Booking setIsDone(@PathVariable Long id, @RequestParam boolean isDone){
