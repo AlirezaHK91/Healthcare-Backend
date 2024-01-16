@@ -22,7 +22,7 @@ public class BookingController {
     BookingService bookingService;
 
     @PostMapping("/booking")
-    @PreAuthorize("hasRole ('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public Booking createBooking(@RequestBody Booking booking){
         return bookingService.createBooking(booking);
 

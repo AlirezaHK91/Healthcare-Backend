@@ -92,7 +92,7 @@ class ScheduleServiceTest {
     private Schedule createdSchedule() {
         Schedule schedule = new Schedule();
         schedule.setDate(Date.valueOf("2024-01-02").toLocalDate());
-        schedule.setTime(Time.valueOf("12:00:00"));
+        schedule.setFormattedTime(Time.valueOf("12:00:00"));
         schedule.setAvailable(true);
         return schedule;
     }

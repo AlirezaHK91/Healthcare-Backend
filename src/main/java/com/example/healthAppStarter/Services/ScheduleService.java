@@ -27,7 +27,7 @@ public class ScheduleService {
         List<Schedule> existingSchedules = scheduleRepository.findByDate(newSchedule.getDate());
 
         for (Schedule existingSchedule : existingSchedules) {
-            if (!isHourGapValid(newSchedule.getTime(), existingSchedule.getTime())) {
+            if (!isHourGapValid(newSchedule.getFormattedTime(), existingSchedule.getFormattedTime())) {
                 return false;
             }
         }

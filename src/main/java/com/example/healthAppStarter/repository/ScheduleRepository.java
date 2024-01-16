@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
-    List<Schedule> findByDateAndTime(LocalDate date, Time time);
+    List<Schedule> findByDateAndFormattedTime(LocalDate date, Time formattedTime);
 
     List<Schedule> findByDate(LocalDate date);
 

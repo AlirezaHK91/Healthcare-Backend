@@ -19,9 +19,12 @@ public class ScheduleController {
     ScheduleService scheduleService;
 
     @PostMapping("/schedule")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<?> createSchedule(@RequestBody Schedule schedule){
         try {
+            // Set the time attribute using the getFormattedTime method
+            schedule.parseAndSetTime();
+
             Schedule createdSchedule = scheduleService.createSchedule(schedule);
             return new ResponseEntity<>(createdSchedule, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
@@ -29,7 +32,7 @@ public class ScheduleController {
         }
     }
     @GetMapping("/schedule/{id}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public Schedule getScheduleById(@PathVariable Long id){
         return scheduleService.getScheduleById(id);
     }

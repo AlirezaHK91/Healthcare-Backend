@@ -11,7 +11,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.validation.annotation.Validated;
 
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "schedule")
@@ -30,9 +33,13 @@ public class Schedule {
     private Booking booking;
     @Column(name = "date")
     private LocalDate date;
+
+    @Transient
+    private String time;
     @Basic
     @Column(name = "time")
-    private Time time;
+    private Time formattedTime;
+
     @Column(name = "is_available")
     @ColumnDefault("true")
     private boolean isAvailable;
@@ -46,6 +53,7 @@ public class Schedule {
     @Enumerated(EnumType.STRING)
     @Column(name = "specialist")
     private Speciality speciality;
+
 
 
 
@@ -84,10 +92,10 @@ public class Schedule {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-    public Time getTime() {
+    public String getTime() {
         return time;
     }
-    public void setTime(Time time) {
+    public void setTime(String time) {
         this.time = time;
     }
     @JsonProperty("isAvailable")
@@ -108,5 +116,26 @@ public class Schedule {
     }
     public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Time getFormattedTime() {
+        return formattedTime;
+    }
+
+    public void setFormattedTime(Time formattedTime) {
+        this.formattedTime = formattedTime;
+    }
+    public void parseAndSetTime() {
+        try {
+            // Parse the time string to create a Date object
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            Date parsedDate = dateFormat.parse(this.time);
+
+            // Convert the Date object to a Time object
+            this.formattedTime = new Time(parsedDate.getTime());
+        } catch (ParseException e) {
+            // Handle the case where the time string is not in the expected format
+            e.printStackTrace();
+        }
     }
 }
